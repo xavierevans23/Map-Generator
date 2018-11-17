@@ -328,7 +328,7 @@ public class Manager : MonoBehaviour
                     _TileNumbers[7] = true;
                 }
 
-                //Decides for each corner of block what it should be. Since this is based on how they are arranged, this can be simplified.
+                //Decides for each corner of block what it should be. Since this is based on how they are arranged, this cannot be simplified.
                 int _TopLeft = 0;
                 int _TopRight = 0;
                 int _BottomLeft = 0;
@@ -537,7 +537,7 @@ public class Manager : MonoBehaviour
         }
 
         _BubbleOut = GenerateBubbleMap(0.4f, _MapWidth, _MapHeight, 5); //Simple map set up just for rock areas
-        //Rocks
+                                                                        //Rocks
         for (int _MapCountX = 0; _MapCountX < _MapWidth; _MapCountX++)
         {
             for (int _MapCountY = 0; _MapCountY < _MapHeight; _MapCountY++)
@@ -555,113 +555,39 @@ public class Manager : MonoBehaviour
         {
             for (int _MapCountY = 0; _MapCountY < _MapHeight; _MapCountY++)
             {
-                if (!_BubbleOut[_MapCountX, _MapCountY])
+                if (_BubbleOut[_MapCountX, _MapCountY])
                 {
-                    _BubbleOut[_MapCountX, _MapCountY] = Random.value > 0.4f;
+                    _BasicMap[_MapCountX, _MapCountY] = 2;
                 }
 
             }
         }
-        _BubbleOut = ApplyBubbleFilter(_BubbleOut, _MapWidth, _MapHeight, 1);
-        bool[,] _BubbleOutFalse = _BubbleOut;
-        for (int _RepeatCount = 0; _RepeatCount < 0; _RepeatCount++)
-        {
-            
-            _BubbleOut = _BubbleOutFalse;
-            for (int _MapCountX = 0; _MapCountX < _MapWidth; _MapCountX++)
-            {
-                for (int _MapCountY = 0; _MapCountY < _MapHeight; _MapCountY++)
-                {
-                    if (!_BubbleOut[_MapCountX, _MapCountY])
-                    {
-                        if (_MapCountX < _MapWidth - 1)
-                        {
-                            if (_MapCountY < _MapHeight - 1)
-                            {
-                                if (!_BubbleOut[_MapCountX + 1, _MapCountY + 1])
-                                {
-                                    _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                                }
-                            }
-                            if (_MapCountY > 0)
-                            {
-                                if (!_BubbleOut[_MapCountX + 1, _MapCountY - 1])
-                                {
-                                    _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                                }
-                            }
-                            if (!_BubbleOut[_MapCountX + 1, _MapCountY])
-                            {
-                                _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                            }
-                        }
-                        if (_MapCountX > 0)
-                        {
-                            if (_MapCountY < _MapHeight - 1)
-                            {
-                                if (!_BubbleOut[_MapCountX - 1, _MapCountY + 1])
-                                {
-                                    _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                                }
-                            }
-                            if (_MapCountY > 0)
-                            {
-                                if (!_BubbleOut[_MapCountX - 1, _MapCountY - 1])
-                                {
-                                    _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                                }
-                            }
-                            if (!_BubbleOut[_MapCountX - 1, _MapCountY])
-                            {
-                                _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                            }
 
-                        }
-                        if (_MapCountY < _MapHeight - 1)
-                        {
-                            if (!_BubbleOut[_MapCountX, _MapCountY + 1])
-                            {
-                                _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                            }
-                        }
-                        if (_MapCountY > 0)
-                        {
-                            if (!_BubbleOut[_MapCountX, _MapCountY - 1])
-                            {
-                                _BubbleOutFalse[_MapCountX, _MapCountY] = true;
-                            }
-                        }
-                        
 
-                    }
-
-                }
-            }
-        }
 
         for (int _MapCountX = 0; _MapCountX < _MapWidth; _MapCountX++)
         {
             for (int _MapCountY = 0; _MapCountY < _MapHeight; _MapCountY++)
             {
-                if (!_BubbleOut[_MapCountX, _MapCountY])
+                if (!(_BasicMap[_MapCountX, _MapCountY]==2))
                 {
                     if (_MapCountX < _MapWidth - 1)
                     {
                         if (_MapCountY < _MapHeight - 1)
                         {
-                            if (_BubbleOut[_MapCountX + 1, _MapCountY + 1])
+                            if (_BasicMap[_MapCountX + 1, _MapCountY + 1] == 2)
                             {
                                 _BasicMap[_MapCountX, _MapCountY] = 3;
                             }
                         }
                         if (_MapCountY > 0)
                         {
-                            if (_BubbleOut[_MapCountX + 1, _MapCountY - 1])
+                            if (_BasicMap[_MapCountX + 1, _MapCountY - 1] == 2)
                             {
                                 _BasicMap[_MapCountX, _MapCountY] = 3;
                             }
                         }
-                        if (_BubbleOut[_MapCountX + 1, _MapCountY])
+                        if (_BasicMap[_MapCountX + 1, _MapCountY] == 2)
                         {
                             _BasicMap[_MapCountX, _MapCountY] = 3;
                         }
@@ -670,45 +596,47 @@ public class Manager : MonoBehaviour
                     {
                         if (_MapCountY < _MapHeight - 1)
                         {
-                            if (_BubbleOut[_MapCountX - 1, _MapCountY + 1])
+                            if (_BasicMap[_MapCountX - 1, _MapCountY + 1] == 2)
                             {
                                 _BasicMap[_MapCountX, _MapCountY] = 3;
                             }
                         }
                         if (_MapCountY > 0)
                         {
-                            if (_BubbleOut[_MapCountX - 1, _MapCountY - 1])
+                            if (_BasicMap[_MapCountX - 1, _MapCountY - 1] == 2)
                             {
                                 _BasicMap[_MapCountX, _MapCountY] = 3;
                             }
                         }
-                        if (_BubbleOut[_MapCountX - 1, _MapCountY])
+                        if (_BasicMap[_MapCountX - 1, _MapCountY] == 2)
                         {
                             _BasicMap[_MapCountX, _MapCountY] = 3;
                         }
+
                     }
                     if (_MapCountY < _MapHeight - 1)
                     {
-                        if (_BubbleOut[_MapCountX, _MapCountY + 1])
+                        if (_BasicMap[_MapCountX, _MapCountY + 1] == 2)
                         {
                             _BasicMap[_MapCountX, _MapCountY] = 3;
                         }
                     }
                     if (_MapCountY > 0)
                     {
-                        if (_BubbleOut[_MapCountX, _MapCountY - 1])
+                        if (_BasicMap[_MapCountX, _MapCountY - 1] == 2)
                         {
                             _BasicMap[_MapCountX, _MapCountY] = 3;
                         }
                     }
 
+
                 }
-                else
-                {
-                    _BasicMap[_MapCountX, _MapCountY] = 2;
-                }
+
             }
         }
+
+
+
 
         //Sea and beach
         for (int _MapCountX = 0; _MapCountX < _MapHeight; _MapCountX++)

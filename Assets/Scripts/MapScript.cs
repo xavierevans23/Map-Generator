@@ -207,7 +207,7 @@ public class MapScript : MonoBehaviour {
         {
             TimeTakenCounter += Time.unscaledDeltaTime;
             SetMapStage(GraphicsMapload, 1);
-            LoadMapStage = 4;
+            LoadMapStage = 3;
             OnceLoaded = false;
         }
         if (LoadMapStage == 3 && OnceLoaded)
